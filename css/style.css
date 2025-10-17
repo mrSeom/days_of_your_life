@@ -1,0 +1,598 @@
+/* === ГЛОБАЛЬНЫЕ СТИЛИ === */
+html {
+  overflow-y: scroll; /* фиксирует ширину при появлении скролла */
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(120deg,   #430101, #000000, #1d005b);
+  color: #263238;
+  line-height: 1.5;
+}
+
+/* === ЦВЕТНОЙ АБСТРАКТНЫЙ АНИМИРОВАННЫЙ ФОН === */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 20% 30%, #1b5e20 0%, transparent 25%),
+    radial-gradient(circle at 80% 70%, #d32f2f 0%, transparent 30%),
+    radial-gradient(circle at 40% 90%, #0d47a1 0%, transparent 35%);
+  opacity: 0.08;
+  z-index: -1;
+  pointer-events: none;
+  animation: bgFloat 40s infinite alternate ease-in-out;
+}
+
+@keyframes bgFloat {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-20px, -20px) scale(1.05);
+  }
+}
+
+.container {
+  width: min(100% - 2rem, 600px);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* === ШАПКА === */
+header {
+  text-align: center;
+  padding: 2rem 0 1.5rem;
+}
+
+header h1 {
+  font-size: 3.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg,  #f71d1d, #760777);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-bottom: 0.5rem;
+  margin-top: 3.5rem;
+}
+
+#quote {
+  font-style: italic;
+  color: #f1e0e0;
+  margin-top: 0.5rem;
+}
+
+/* === ФОРМА === */
+#inputSection {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  margin: 2rem auto 3rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+#inputSection label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-icon {
+  width: 20px;
+  height: 20px;
+  color: #1976d2;
+}
+
+#inputSection input[type="date"] {
+  width:95%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+}
+
+/* === ПОЛ — СТРОГО В ОДИН ГОРИЗОНТАЛЬНЫЙ РЯД === */
+.gender-icons {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  gap: 2rem !important;
+  flex-wrap: nowrap !important;
+  width: 100% !important;
+  margin: 1.2rem 0 !important;
+  /* 🔥 КЛЮЧЕВОЕ: не даём сжиматься ниже нужного */
+  min-width: 240px; /* 2 × 100px + gap */
+}
+
+.gender-option {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  flex: 0 0 auto !important; /* не сжимать */
+  width: auto !important;
+  min-width: 100px !important;
+  white-space: nowrap !important;
+   cursor: pointer;
+}
+
+.gender-icon {
+  font-size: 1.8rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]:checked + .gender-icon {
+  color: #1976d2;
+  transform: scale(1.1);
+}
+
+.gender-option span {
+  font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+  font-weight: 500;
+  color: #455a64;
+  text-align: center;
+  transition: color 0.2s;
+}
+
+input[type="radio"]:checked + .gender-icon + span {
+  color: #1976d2;
+  font-weight: 600;
+}
+
+#inputSection button {
+  width: 100%;
+  padding: 0.9rem;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+/* === КНОПКА ИЗМЕНИТЬ === */
+.toggle-btn {
+  display: block;
+  margin: 1.5rem auto;
+  padding: 0.6rem 1.4rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  width: fit-content;
+}
+
+/* === ТАЙМЕР === */
+/* === ЗАКРЕПЛЁННЫЙ ТАЙМЕР С ПЕРЕЛИВАЮЩИМСЯ ГРАДИЕНТОМ === */
+#fixedTimer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem;
+  z-index: 1000;
+  transform: translateY(-100%);
+  transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  background: linear-gradient(120deg, #1b5e20, #d32f2f, #0d47a1, #1b5e20);
+  background-size: 300% 300%;
+  animation: gradientShift 12s ease infinite;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+#fixedTimer.visible {
+  transform: translateY(0);
+}
+
+.timer-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.inspiration-call {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 800;
+  color: white;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+  padding: 0.8rem 1.2rem;
+  display: inline-block;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.stats-line {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-bottom: 1.4rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #37474f;
+}
+
+.stats-line div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats-line strong {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #d32f2f;
+  line-height: 1.2;
+}
+
+.countdown-line {
+  font-family: 'SF Mono', 'Monaco', monospace;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1b5e20;
+  margin-bottom: 1.6rem;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+
+.countdown-line span {
+  font-weight: 700;
+  color: #d32f2f;
+}
+
+.inspiration-call {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 800;
+  color: #1b5e20;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: rgba(27, 94, 32, 0.06);
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.inspiration-call strong {
+  color: #d32f2f;
+  font-weight: 900;
+  display: block;
+  letter-spacing: 1.5px;
+}
+
+/* === СЕТКА === */
+#gridContainer {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#gridContainer canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Иконка сегодня */
+#todayBadge {
+  position: absolute;
+  background: #1b5e20;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 10;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  pointer-events: none; /* 🔥 ЭТО КЛЮЧЕВАЯ СТРОКА */
+}
+
+/* Фраза над будущим */
+#futureMessage {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 800;
+  color: white;
+  z-index: 5;
+  padding: 0.9rem 1.6rem;
+  border-radius: 18px;
+  max-width: 900px;
+  background: linear-gradient(120deg, #d32f2f, #1b5e20, #0d47a1);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* === КНОПКИ === */
+#actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem auto 3rem;
+}
+
+#actions button {
+  padding: 0.7rem 1.4rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#pdfBtn { background: #4caf50; color: white; }
+#shareBtn { background: #2196f3; color: white; }
+
+/* === СОВРЕМЕННЫЙ СЧЁТЧИК ВНИЗУ === */
+#bottomCounter {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem 1.2rem;
+  text-align: center;
+  z-index: 900;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: white;
+  background: linear-gradient(120deg, #1b5e20, #0d47a1, #d32f2f);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* Статистика: Прожито / Осталось */
+.bottom-stats {
+  font-size: clamp(1rem, 2.8vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 0.3rem;
+  letter-spacing: -0.02em;
+}
+
+.bottom-stats strong {
+  font-weight: 700;
+  color: #ffecb3;
+  font-feature-settings: "tnum"; /* табличные цифры — выравнивание */
+}
+
+/* Разделитель • */
+.bottom-stats::after {
+  content: "•";
+  display: inline-block;
+  margin: 0 0.4rem;
+  opacity: 0.7;
+}
+
+/* Обратный отсчёт */
+.bottom-countdown {
+  font-size: clamp(0.85rem, 2.4vw, 1rem);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: #e0f7fa;
+}
+
+.bottom-countdown span {
+  font-weight: 600;
+  color: #ffccbc;
+  font-feature-settings: "tnum";
+  margin: 0 0.15rem;
+}
+
+/* Мобильная оптимизация */
+@media (max-width: 600px) {
+  .bottom-stats {
+    font-size: 1.1rem;
+  }
+  .bottom-countdown {
+    font-size: 0.9rem;
+  }
+  .bottom-countdown span {
+    margin: 0 0.1rem;
+  }
+}
+
+/* === СКРЫТИЕ === */
+.hidden { display: none; }
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+}
+
+/* === АДАПТИВНОСТЬ === */
+@media (max-width: 600px) {
+  .stats-line {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .gender-icons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
+
+.minitxt {
+	font-size:0.7rem;
+	color: #8d0963;
+}
+.ptxt{
+	font-size:0.7rem;
+	color: #6f5366;;
+	text-align: center;
+}
+
+/* === КНОПКА ПОМОЩИ === */
+#helpButton {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  width: 48px;
+  height: 48px;
+  background: #1976d2;
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transition: all 0.25s ease;
+}
+
+#helpButton:hover {
+  background: #1565c0;
+  transform: translateY(-3px) rotate(90deg); /* лёгкая анимация */
+}
+
+/* === МОДАЛЬНОЕ ОКНО === */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              visibility 0.4s;
+}
+
+.modal.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.modal-content {
+  background: white;
+  padding: 2.2rem;
+  border-radius: 20px;
+  max-width: 520px;
+  width: 92%;
+  position: relative;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  transform: scale(0.9);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              opacity 0.4s ease;
+}
+
+.modal.open .modal-content {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.close-button {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #999;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  color: #e53935;
+  background: rgba(229, 57, 53, 0.1);
+  transform: rotate(90deg);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #1976d2;
+  font-size: 1.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.modal-content p {
+  margin-bottom: 1rem;
+  line-height: 1.65;
+  color: #333;
+  font-size: 1.05rem;
+}
+
+/* === РУКОПИСНАЯ ПОДПИСЬ === */
+.signature {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(0.5rem, 1.6vw, 1.2rem);
+  font-weight: 700;
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #db1276;
+  opacity: 0.9;
+  letter-spacing: 1px;
+}
+
+.signature a {
+  color: #d32f2f;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.signature a:hover {
+  color: #b71c1c;
+  text-decoration: underline;
+}
+
+p a {
+  color: #2196f3; /* голубой цвет Material Design */
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+  color: #1976d2; /* чуть темнее при наведении */
+}
