@@ -4,30 +4,21 @@ let animationInterval = null;
 let currentDayIndex = 0;
 let tooltip = null;
 
-const QUOTES = [
-  "Время — это единственное, что нельзя вернуть.",
-  "Живи так, будто завтра не наступит.",
-  "Каждый день — это шанс начать заново.",
-  "Мгновения уходят навсегда — лови их, пока они рядом.",
-"Сегодняшний день — твой единственный настоящий подарок.",
-"Не откладывай жизнь на потом — «потом» может не быть.",
-"Время не ждёт, но ты можешь начать прямо сейчас.",
-"Каждое утро — чистый лист, напиши на нём что-то важное.",
-"Ты не можешь остановить время, но можешь наполнить его смыслом.",
-"Живи так, чтобы вчерашний ты гордился сегодняшним.",
-"Прошлое — урок, будущее — загадка, а сегодня — дар.",
-"Даже секунда может изменить всю твою жизнь — не упускай её.",
-"Настоящее — единственное время, в котором ты действительно живёшь."
-];
-
 const LIFE_EXPECTANCY = {
   male: 68.04,
   female: 78.74
 };
 
-function loadRandomQuote() {
-  const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-  document.getElementById('quote').textContent = `"${quote}"`;
+async function loadRandomQuote() {
+  try {
+    const response = await fetch('js/quotes.json');
+    const quotes = await response.json();
+    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById('quote').textContent = `"${quote}"`;
+  } catch (error) {
+    console.error('Ошибка загрузки цитаты:', error);
+    document.getElementById('quote').textContent = '"Время — это единственное, что нельзя вернуть."';
+  }
 }
 
 function calculateLifeGrid(birthDateString, gender) {
@@ -326,8 +317,8 @@ function updateStats(lived, total) {
   }, 1000);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadRandomQuote();
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadRandomQuote();
   document.getElementById('todayBadge').textContent = formatTodayDate();
 
   const form = document.getElementById('lifeForm');
